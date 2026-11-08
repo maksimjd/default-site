@@ -1707,13 +1707,15 @@
       <div class="status" id="pwdStrengthLabel" style="margin-top:4px;">Надёжность</div>
     </div>
     <div class="panel">
-      <label class="label">Длина пароля: <span class="slider-value" id="pwdLenVal">30</span></label>
-      <input type="range" id="pwdLen" min="30" max="100" value="30">
+      <label class="label" for="pwdLenNumber">Длина пароля (от 5 до 100 символов)</label>
+      <input type="number" id="pwdLenNumber" min="5" max="100" step="1" value="30" style="width:100px;margin-bottom:10px;" inputmode="numeric">
+      <input type="range" id="pwdLen" min="5" max="100" step="1" value="30" aria-label="Длина пароля">
+      <p class="muted" style="margin-top:8px;">Выберите длину ползунком или введите число. Для важных аккаунтов рекомендуется не менее 16 символов.</p>
       <div class="checks" style="margin-top:16px;">
         <label class="check"><input type="checkbox" id="pwdUpper" checked> Заглавные</label>
         <label class="check"><input type="checkbox" id="pwdLower" checked> Строчные</label>
         <label class="check"><input type="checkbox" id="pwdDigits" checked> Цифры</label>
-        <label class="check"><input type="checkbox" id="pwdSymbols"> Символы</label>
+        <label class="check"><input type="checkbox" id="pwdSymbols" checked> Символы</label>
         <label class="check"><input type="checkbox" id="pwdNoSimilar"> Без похожих</label>
         <label class="check"><input type="checkbox" id="pwdNoAmbiguous"> Без неоднозначных</label>
       </div>
@@ -2822,7 +2824,7 @@ const SIMILAR = 'il1Lo0O';
 const AMBIGUOUS = '{}[]()/\\\'"`~,;:.<>';
 
 function generatePassword() {
-  const len = Math.max(30, Math.min(100, parseInt($('pwdLen').value, 10) || 30));
+  const len = Math.max(5, Math.min(100, parseInt($('pwdLen').value, 10) || 5));
   const groups = [
     $('pwdUpper').checked ? CHARS.upper : '',
     $('pwdLower').checked ? CHARS.lower : '',
@@ -2858,14 +2860,12 @@ function generatePassword() {
 function updateStrength(pwd) {
   const bars = $('pwdStrength').querySelectorAll('span');
   const label = $('pwdStrengthLabel');
-  let score = 0;
-  if (pwd.length >= 8) score++;
-  if (pwd.length >= 12) score++;
-  if (pwd.length >= 16) score++;
-  if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
-  if (/\d/.test(pwd)) score++;
-  if (/[^A-Za-z0-9]/.test(pwd)) score++;
-  const level = score >= 5 ? 4 : score >= 4 ? 3 : score >= 2 ? 2 : 1;
+  // Короткие пароли не становятся надёжными только из-за разных типов символов.
+  const types = [/[A-Z]/, /[a-z]/, /[0-9]/, /[^A-Za-z0-9]/].filter(re => re.test(pwd)).length;
+  let level = 1;
+  if (pwd.length >= 16 && types >= 3) level = 4;
+  else if (pwd.length >= 12 && types >= 2) level = 3;
+  else if (pwd.length >= 8) level = 2;
   const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e'];
   const labels = ['Очень слабый', 'Слабый', 'Средний', 'Надёжный'];
   bars.forEach((bar, i) => { bar.style.background = i < level ? colors[level - 1] : 'var(--border)'; });
@@ -2873,7 +2873,21 @@ function updateStrength(pwd) {
 }
 
 $('pwdLen').addEventListener('input', (e) => {
-  $('pwdLenVal').textContent = e.target.value;
+  $('pwdLenNumber').value = e.target.value;
+  generatePassword();
+});
+$('pwdLenNumber').addEventListener('input', (e) => {
+  const value = Number(e.target.value);
+  if (e.target.value !== '' && Number.isInteger(value) && value >= 5 && value <= 100) {
+    $('pwdLen').value = value;
+    generatePassword();
+  }
+});
+$('pwdLenNumber').addEventListener('change', (e) => {
+  const value = e.target.value === '' ? Number($('pwdLen').value) : Number(e.target.value);
+  const length = Number.isFinite(value) ? Math.max(5, Math.min(100, Math.round(value))) : 30;
+  e.target.value = length;
+  $('pwdLen').value = length;
   generatePassword();
 });
 ['pwdUpper', 'pwdLower', 'pwdDigits', 'pwdSymbols', 'pwdNoSimilar', 'pwdNoAmbiguous'].forEach(id => {
@@ -2893,9 +2907,9 @@ $('btnCopyPwd').addEventListener('click', () => {
 function restorePwdSettings() {
   // При каждом открытии стандартная длина — 30, независимо от старых настроек.
   $('pwdLen').value = 30;
-  $('pwdLenVal').textContent = '30';
+  $('pwdLenNumber').value = 30;
   ['pwdUpper', 'pwdLower', 'pwdDigits', 'pwdSymbols', 'pwdNoSimilar', 'pwdNoAmbiguous'].forEach(id => {
-    $(id).checked = id === 'pwdUpper' || id === 'pwdLower' || id === 'pwdDigits';
+    $(id).checked = id === 'pwdUpper' || id === 'pwdLower' || id === 'pwdDigits' || id === 'pwdSymbols';
   });
   generatePassword();
 }
