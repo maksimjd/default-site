@@ -1305,6 +1305,172 @@
     line-height: 1.45;
   }
   body:not(.light) .comment-stats .stat-item { background: rgba(255,255,255,0.02); }
+
+  /* ===== Двухколоночная сетка для вкладки Комментарии ===== */
+  .comments-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .comments-left,
+  .comments-right {
+    min-width: 0;
+  }
+  .comments-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .comments-right-panel {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 480px;
+  }
+  .comments-right .log-box {
+    margin-top: 0;
+  }
+  .comments-right-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .comments-right-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .comments-right-title::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent1);
+    box-shadow: 0 0 8px var(--accent1);
+  }
+  .comments-right-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .comments-right-actions .btn {
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+  .comments-right-panel .comments {
+    margin-top: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+    flex: 1;
+  }
+  .comments-right-panel .comment {
+    background: var(--input-bg);
+  }
+  .comments-right-panel .comment-actions button {
+    background: var(--panel);
+  }
+  .comments-right-panel .comments:empty::before {
+    content: "Здесь появятся готовые комментарии для быстрого копирования. Введите тему слева и нажмите «Сгенерировать новые».";
+    display: block;
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    background: var(--input-bg);
+  }
+
+  /* Компактные верхние вкладки нейросети и строка API-ключа */
+  .comments-left .mode-switch {
+    display: inline-flex;
+    gap: 4px;
+    margin-bottom: 10px;
+    padding: 4px;
+    border-radius: 11px;
+    width: 100%;
+  }
+  .comments-left .mode-btn {
+    min-width: 0;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+    gap: 5px;
+  }
+  .comments-left .mode-btn .icon {
+    font-size: 13px;
+  }
+  .compact-key-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 11px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .compact-key-bar .key-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .compact-key-bar input[type="password"] {
+    flex: 1;
+    min-width: 130px;
+    padding: 5px 9px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+  .compact-key-bar .key-saved {
+    margin-top: 0;
+    min-height: 0;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .compact-key-bar .key-link {
+    font-size: 11px;
+    color: var(--accent1);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(99, 102, 241, 0.5);
+    white-space: nowrap;
+  }
+  .compact-key-bar .key-link:hover {
+    color: var(--accent2);
+    border-bottom-color: var(--accent2);
+  }
+  .comments-left .limit-warn {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .comments-left .limit-warn .limit-title {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  @media (max-width: 860px) {
+    .comments-workspace {
+      grid-template-columns: 1fr;
+    }
+    .comments-right-panel {
+      max-height: none;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1544,142 +1710,126 @@
   <section id="section-comments" class="hidden">
     <h1>💬 Генератор комментариев</h1>
 
-    <div class="panel" style="border-left: 3px solid var(--accent2); background: rgba(168,85,247,0.05); margin-bottom: 14px; padding: 14px 16px;">
-      <div style="display: flex; align-items: flex-start; gap: 12px;">
-        <span style="font-size: 22px; line-height: 1;">🧪</span>
-        <div>
-          <strong style="display: block; margin-bottom: 4px; font-size: 14px;">Тестовый раздел</strong>
-          <p style="margin: 0; font-size: 13px; color: var(--muted); line-height: 1.55;">
-            Эта вкладка находится в стадии тестирования. Функциональность, интерфейс и список доступных провайдеров могут меняться. Возможны перебои в работе внешних сервисов генерации — это нормально для тестового режима.
-          </p>
+    <div class="comments-workspace">
+      <div class="comments-left">
+        <div class="mode-switch">
+          <button class="mode-btn active" data-mode="free">
+            <span class="icon">🆓</span> Бесплатно
+          </button>
+          <button class="mode-btn" data-mode="deepseek">
+            <span class="icon">🤖</span> DeepSeek API
+          </button>
+          <button class="mode-btn" data-mode="pollinations">
+            <span class="icon">🌸</span> Pollinations API
+          </button>
+        </div>
+
+        <div class="limit-warn hidden" id="freeLimitWarn">
+          <div class="limit-title">⚠️ Бесплатный режим: 1 запрос в 15 сек · только текст</div>
+          <div style="color: var(--muted);">Ответ может идти 10–30 сек. Для быстрой работы укажите свой API-ключ во вкладке выше.</div>
+        </div>
+
+        <div class="compact-key-bar hidden" id="deepseekKeyBox">
+          <span class="key-label">🔑 Ключ DeepSeek:</span>
+          <input type="password" id="deepseekKey" placeholder="sk-...">
+          <span class="status success key-saved" id="deepseekKeySaved" style="display:none;">✓ Сохранён</span>
+          <a class="key-link" href="https://platform.deepseek.com" target="_blank" rel="noopener">Получить ключ ↗</a>
+        </div>
+
+        <div class="compact-key-bar hidden" id="pollinationsKeyBox">
+          <span class="key-label">🔑 Ключ Pollinations:</span>
+          <input type="password" id="pollinationsKey" placeholder="sk_... или pk_...">
+          <span class="status success key-saved" id="pollinationsKeySaved" style="display:none;">✓ Сохранён</span>
+          <a class="key-link" href="https://enter.pollinations.ai" target="_blank" rel="noopener">Получить ключ ↗</a>
+        </div>
+
+        <div class="tabs" style="margin-bottom: 10px;">
+          <button class="tab-text active" id="tabText">💬 Текст</button>
+          <button class="tab-image" id="tabImage">🖼 Изображение</button>
+        </div>
+
+        <div class="panel" style="margin-bottom: 12px; padding: 14px;">
+          <label class="label">Текст поста или тема</label>
+          <textarea id="postText" placeholder="Вставьте текст поста или опишите тему..."></textarea>
+          <div style="margin-top:10px;">
+            <label class="label">Свой стиль комментария (необязательно)</label>
+            <input type="text" id="styleText" placeholder="Например: с юмором, официально...">
+          </div>
+          <div id="imageBlock" class="hidden" style="margin-top:12px;">
+            <label class="label">Картинки (до 5)</label>
+            <div class="drop-zone" id="dropZone">Перетащите или кликните для загрузки</div>
+            <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
+            <div class="thumbs" id="thumbs"></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom: 12px; padding: 12px 14px;">
+          <div class="row" style="margin-bottom:10px;">
+            <div class="num-field">
+              <label>Кол-во комментов</label>
+              <input type="number" id="countComments" min="1" max="50" value="10">
+            </div>
+            <div class="num-field">
+              <label>Предложений</label>
+              <input type="number" id="countSentences" min="1" max="10" value="3">
+            </div>
+          </div>
+          <div class="checks" style="margin: 6px 0 0;">
+            <label class="check"><input type="checkbox" id="optEmoji" checked> Со смайликами</label>
+            <label class="check"><input type="checkbox" id="optPositive"> Строго позитивный тон</label>
+          </div>
+        </div>
+
+        <div class="buttons" style="margin-top: 10px; margin-bottom: 6px;">
+          <button class="btn btn-primary" id="btnGenerate">✨ Сгенерировать новые</button>
+          <button class="btn" id="btnClear">Очистить</button>
+        </div>
+
+        <div class="status" id="status" style="margin-top: 6px;"></div>
+      </div>
+
+      <div class="comments-right">
+        <div class="panel comments-right-panel">
+          <div class="comments-right-head">
+            <span class="comments-right-title">Готовые комментарии</span>
+            <div class="comments-right-actions">
+              <button class="btn hidden" id="btnCopyAll">📋 Копировать все</button>
+              <button class="btn hidden" id="btnDownload">⬇ Скачать в TXT</button>
+            </div>
+          </div>
+          <div class="comments" id="comments"></div>
+        </div>
+
+        <div class="log-box">
+          <h3>Лог работы</h3>
+
+          <div id="commentStats" class="comment-stats">
+            <div class="stat-item">
+              <span class="stat-label">Запросов</span>
+              <strong id="statRequests">0</strong>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Комментариев</span>
+              <strong id="statComments">0</strong>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Токены (вход)</span>
+              <strong id="statIn">0</strong>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Токены (выход)</span>
+              <strong id="statOut">0</strong>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Стоимость</span>
+              <strong id="statCost">$0.0000</strong>
+            </div>
+          </div>
+          <div class="comment-stats-note" id="commentStatsNote">Бесплатный режим не тарифицируется. DeepSeek — вход $0.28 / 1M, выход $0.42 / 1M.</div>
+
+          <div class="log-list" id="logList"></div>
         </div>
       </div>
-    </div>
-
-    <div class="explain">
-      <div class="explain-title">💡 Зачем это?</div>
-      <p>Если не хочется придумывать комментарий по теме поста или видео — сайт может сгенерировать его за вас. Просто вставьте текст или опишите тему, а нейросеть предложит готовые варианты.</p>
-      <p>Сайт может быть полезен не всем, а в некоторых случаях — например, когда нужно быстро оставить осмысленный отзыв или поддержать обсуждение. Если он вам не нужен — ничего страшного, просто закройте вкладку.</p>
-    </div>
-
-    <div class="mode-switch">
-      <button class="mode-btn active" data-mode="free">
-        <span class="icon">🆓</span> Бесплатно
-      </button>
-      <button class="mode-btn" data-mode="deepseek">
-        <span class="icon">🤖</span> DeepSeek API
-      </button>
-      <button class="mode-btn" data-mode="pollinations">
-        <span class="icon">🌸</span> Pollinations API
-      </button>
-    </div>
-
-    <div class="limit-warn hidden" id="freeLimitWarn">
-      <div class="limit-title">⚠️ Бесплатный режим — с ограничениями</div>
-      <ul>
-        <li><b>1 запрос в 15 секунд</b> — не чаще.</li>
-        <li><b>Медленно</b> — иногда ответ приходит 10–30 секунд.</li>
-        <li><b>Только текст</b> — картинки недоступны.</li>
-        <li><b>Нестабильно</b> — сервер может отваливаться.</li>
-      </ul>
-      <div style="margin-top:8px; color: var(--text);">
-        Если нужна быстрая и надёжная работа — укажи свой API-ключ.
-      </div>
-    </div>
-
-    <div class="panel hidden" id="deepseekKeyBox">
-      <label class="label">API-ключ DeepSeek</label>
-      <input type="password" id="deepseekKey" placeholder="sk-...">
-      <div class="status success" id="deepseekKeySaved" style="display:none;">✓ Сохранён</div>
-      <div class="key-links">
-        <a href="https://platform.deepseek.com" target="_blank" rel="noopener">🔑 Получить ключ DeepSeek</a>
-      </div>
-    </div>
-
-    <div class="panel hidden" id="pollinationsKeyBox">
-      <label class="label">API-ключ Pollinations</label>
-      <input type="password" id="pollinationsKey" placeholder="sk_... или pk_...">
-      <div class="status success" id="pollinationsKeySaved" style="display:none;">✓ Сохранён</div>
-      <div class="key-links">
-        <a href="https://enter.pollinations.ai" target="_blank" rel="noopener">🔑 Получить ключ Pollinations</a>
-      </div>
-    </div>
-
-    <div class="tabs">
-      <button class="tab-text active" id="tabText">💬 Текст</button>
-      <button class="tab-image" id="tabImage">🖼 Изображение</button>
-    </div>
-
-    <div class="panel">
-      <label class="label">Текст поста или тема</label>
-      <textarea id="postText" placeholder="Вставьте текст поста или опишите тему..."></textarea>
-      <div style="margin-top:12px;">
-        <label class="label">Свой стиль комментария (необязательно)</label>
-        <input type="text" id="styleText" placeholder="Например: с юмором, официально...">
-      </div>
-      <div id="imageBlock" class="hidden" style="margin-top:14px;">
-        <label class="label">Картинки (до 5)</label>
-        <div class="drop-zone" id="dropZone">Перетащите или кликните для загрузки</div>
-        <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
-        <div class="thumbs" id="thumbs"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="row" style="margin-bottom:14px;">
-        <div class="num-field">
-          <label>Кол-во комментов</label>
-          <input type="number" id="countComments" min="1" max="50" value="10">
-        </div>
-        <div class="num-field">
-          <label>Предложений</label>
-          <input type="number" id="countSentences" min="1" max="10" value="3">
-        </div>
-      </div>
-      <div class="checks">
-        <label class="check"><input type="checkbox" id="optEmoji" checked> Со смайликами</label>
-        <label class="check"><input type="checkbox" id="optPositive"> Строго позитивный тон</label>
-      </div>
-    </div>
-
-    <div class="buttons">
-      <button class="btn btn-primary" id="btnGenerate">✨ Сгенерировать новые</button>
-      <button class="btn" id="btnClear">Очистить</button>
-      <button class="btn hidden" id="btnCopyAll">📋 Копировать все</button>
-      <button class="btn hidden" id="btnDownload">⬇ Скачать в TXT</button>
-    </div>
-
-    <div class="status" id="status"></div>
-    <div class="comments" id="comments"></div>
-
-    <div class="log-box">
-      <h3>Лог работы</h3>
-
-      <div id="commentStats" class="comment-stats">
-        <div class="stat-item">
-          <span class="stat-label">Запросов</span>
-          <strong id="statRequests">0</strong>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Комментариев</span>
-          <strong id="statComments">0</strong>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Токены (вход)</span>
-          <strong id="statIn">0</strong>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Токены (выход)</span>
-          <strong id="statOut">0</strong>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Стоимость</span>
-          <strong id="statCost">$0.0000</strong>
-        </div>
-      </div>
-      <div class="comment-stats-note" id="commentStatsNote">Бесплатный режим не тарифицируется. DeepSeek — вход $0.28 / 1M, выход $0.42 / 1M.</div>
-
-      <div class="log-list" id="logList"></div>
     </div>
   </section>
 
