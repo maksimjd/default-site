@@ -1471,103 +1471,6 @@
       max-height: none;
     }
   }
-
-  /* ===== Вкладка KLINCH AI (Тест API) ===== */
-  .klinch-top-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-  .klinch-balance-card {
-    background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.08));
-    border: 1px solid rgba(99, 102, 241, 0.35);
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .klinch-balance-val {
-    font-size: 24px;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    color: var(--text);
-    line-height: 1.15;
-  }
-  .klinch-balance-val small {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .klinch-workspace {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 18px;
-    align-items: start;
-  }
-  .klinch-chat-box {
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    min-height: 260px;
-    max-height: 460px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .klinch-msg {
-    padding: 10px 13px;
-    border-radius: 10px;
-    font-size: 13px;
-    line-height: 1.55;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-  .klinch-msg.user {
-    background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.35);
-    align-self: flex-end;
-    max-width: 88%;
-  }
-  .klinch-msg.assistant {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    align-self: flex-start;
-    width: 100%;
-  }
-  .klinch-msg-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 5px;
-    font-weight: 600;
-  }
-  .klinch-code-hint {
-    font-family: "SF Mono", Consolas, monospace;
-    font-size: 11px;
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-    color: var(--muted);
-    overflow-x: auto;
-  }
-  .mode-btn.active[data-mode="klinch"] {
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-  }
-  @media (max-width: 860px) {
-    .klinch-top-grid,
-    .klinch-workspace {
-      grid-template-columns: 1fr;
-    }
-  }
 </style>
 </head>
 <body>
@@ -1584,7 +1487,6 @@
     <li><button class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Главная</button></li>
     <li><button class="nav-link" data-section="downloads"><span class="nav-icon">📥</span> Скачать</button></li>
     <li><button class="nav-link" data-section="comments"><span class="nav-icon">💬</span> Комментарии</button></li>
-    <li><button class="nav-link" data-section="klinch"><span class="nav-icon">⚡</span> Klinch AI (Тест)</button></li>
     <li><button class="nav-link" data-section="game"><span class="nav-icon">🎮</span> Играть</button></li>
     <li><button class="nav-link" data-section="passwords"><span class="nav-icon">🔑</span> Генератор паролей</button></li>
     <li><button class="nav-link" data-section="calculator"><span class="nav-icon">🧮</span> Калькулятор</button></li>
@@ -1814,9 +1716,6 @@
           <button class="mode-btn active" data-mode="free">
             <span class="icon">🆓</span> Бесплатно
           </button>
-          <button class="mode-btn" data-mode="klinch">
-            <span class="icon">⚡</span> Klinch API
-          </button>
           <button class="mode-btn" data-mode="deepseek">
             <span class="icon">🤖</span> DeepSeek API
           </button>
@@ -1842,22 +1741,6 @@
           <input type="password" id="pollinationsKey" placeholder="sk_... или pk_...">
           <span class="status success key-saved" id="pollinationsKeySaved" style="display:none;">✓ Сохранён</span>
           <a class="key-link" href="https://enter.pollinations.ai" target="_blank" rel="noopener">Получить ключ ↗</a>
-        </div>
-
-        <div class="compact-key-bar hidden" id="klinchCommentKeyBox">
-          <span class="key-label">🔑 Ключ Klinch:</span>
-          <input type="password" id="klinchCommentKey" placeholder="kl_live_...">
-          <select id="klinchCommentModel" style="width:auto; min-width:155px; padding:4px 8px; font-size:12px; border-radius:7px;">
-            <option value="deepseek-flash">DeepSeek Flash (дешёвый)</option>
-            <option value="claude-haiku-5-5">Claude Haiku 5.5</option>
-            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-            <option value="claude-sonnet-5-5">Claude Sonnet 5.5</option>
-            <option value="claude-opus-5-5">Claude Opus 5.5</option>
-            <option value="gpt-6.1-sol">GPT-6.1 Sol</option>
-            <option value="grok-4.7">Grok 4.7</option>
-          </select>
-          <span class="status success key-saved" id="klinchCommentKeySaved" style="display:none;">✓ Сохранён</span>
-          <a class="key-link" href="https://klinch.cloud" target="_blank" rel="noopener">Кабинет ↗</a>
         </div>
 
         <div class="tabs" style="margin-bottom: 10px;">
@@ -1945,106 +1828,6 @@
           <div class="comment-stats-note" id="commentStatsNote">Бесплатный режим не тарифицируется. DeepSeek — вход $0.28 / 1M, выход $0.42 / 1M.</div>
 
           <div class="log-list" id="logList"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="section-klinch" class="hidden">
-    <h1>⚡ Klinch Cloud — Тест API и Баланса</h1>
-
-    <div class="klinch-top-grid">
-      <div class="panel" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
-        <div>
-          <label class="label">Ваш API-ключ Klinch (начинается с <code>kl_live_...</code> из раздела «Ключи и баланс»)</label>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <input type="password" id="klinchApiKey" placeholder="Вставьте ваш ключ kl_live_..." style="flex:1; min-width:200px;">
-            <button class="btn" id="klinchToggleKey" type="button" title="Показать/скрыть ключ" style="padding:8px 12px;">👁</button>
-            <button class="btn btn-primary" id="klinchCheckBalanceBtn" type="button">🔄 Проверить баланс</button>
-            <button class="btn" id="klinchLoadModelsBtn" type="button">📦 Загрузить модели</button>
-          </div>
-        </div>
-        <div class="klinch-code-hint">
-          Base URL: <b>https://api.klinch.cloud/v1</b> · Чат: <b>POST /v1/chat/completions</b> · Баланс: <b>GET /v1/balance</b> · Модели: <b>GET /v1/models</b>
-        </div>
-      </div>
-
-      <div class="klinch-balance-card">
-        <div>
-          <span class="label" style="margin-bottom:2px;">Баланс по ключу</span>
-          <div class="klinch-balance-val" id="klinchBalanceValue">— <small>токенов</small></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted); flex-wrap:wrap; gap:6px;">
-          <span id="klinchKeyPrefix">Префикс: —</span>
-          <a href="https://klinch.cloud" target="_blank" rel="noopener" style="color:var(--accent1); text-decoration:none;">Открыть klinch.cloud ↗</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="klinch-workspace">
-      <div class="panel" style="margin-bottom:0;">
-        <div class="row" style="margin-bottom:12px;">
-          <div>
-            <label class="label">Модель нейросети</label>
-            <select id="klinchModelSelect">
-              <optgroup label="Claude (Anthropic)">
-                <option value="claude-opus-5-5">Claude Opus 5.5 (claude-opus-5-5)</option>
-                <option value="claude-sonnet-5-5" selected>Claude Sonnet 5.5 (claude-sonnet-5-5)</option>
-                <option value="claude-haiku-5-5">Claude Haiku 5.5 (claude-haiku-5-5 — быстрый)</option>
-                <option value="claude-fable-5-1">Claude Fable 5.1 (claude-fable-5-1)</option>
-              </optgroup>
-              <optgroup label="DeepSeek">
-                <option value="deepseek-flash">DeepSeek Flash (deepseek-flash — экономный)</option>
-                <option value="deepseek-v4-pro">DeepSeek V4 Pro (deepseek-v4-pro)</option>
-              </optgroup>
-              <optgroup label="OpenAI (GPT)">
-                <option value="gpt-6.1-sol">GPT-6.1 Sol (gpt-6.1-sol)</option>
-                <option value="gpt-6.1-terra">GPT-6.1 Terra (gpt-6.1-terra)</option>
-                <option value="gpt-5.4-mini">GPT-5.4 Mini (gpt-5.4-mini)</option>
-              </optgroup>
-              <optgroup label="Google Gemini & xAI Grok">
-                <option value="gemini-3.1-pro">Gemini 3.1 Pro (gemini-3.1-pro)</option>
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash (gemini-2.5-flash)</option>
-                <option value="grok-4.7">Grok 4.7 (grok-4.7)</option>
-              </optgroup>
-            </select>
-          </div>
-          <div style="flex:0.6; min-width:150px;">
-            <label class="label">Или свой ID модели</label>
-            <input type="text" id="klinchCustomModel" placeholder="Напр.: glm-4.7">
-          </div>
-        </div>
-
-        <label class="label">Системная инструкция (необязательно)</label>
-        <input type="text" id="klinchSystemPrompt" placeholder="Например: Отвечай кратко и по делу на русском языке" style="margin-bottom:12px;">
-
-        <label class="label">Ваш запрос к нейросети</label>
-        <textarea id="klinchUserPrompt" placeholder="Напишите задачу, вопрос или код для проверки..." style="min-height:110px;"></textarea>
-
-        <div class="buttons" style="margin-top:12px;">
-          <button class="btn btn-primary" id="klinchSendBtn" type="button">🚀 Отправить запрос</button>
-          <button class="btn" id="klinchClearChatBtn" type="button">Очистить диалог</button>
-          <button class="btn" id="klinchOpenPopupBtn" type="button" title="Открыть кабинет в отдельном окне">🗗 Окно klinch.cloud</button>
-        </div>
-        <div class="status" id="klinchStatus"></div>
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:14px; min-width:0;">
-        <div class="panel" style="margin-bottom:0;">
-          <div class="comments-right-head">
-            <span class="comments-right-title">Ответы KLINCH API</span>
-            <button class="btn" id="klinchCopyLastBtn" type="button" style="padding:5px 11px; font-size:12px;">📋 Копировать ответ</button>
-          </div>
-          <div class="klinch-chat-box" id="klinchChatBox">
-            <div style="color:var(--muted); font-size:13px; text-align:center; margin:auto; padding:20px;">
-              Вставьте ваш ключ <b>kl_live_...</b> сверху и отправьте тестовое сообщение. Ключ автоматически синхронизируется с вкладкой «Комментарии».
-            </div>
-          </div>
-        </div>
-
-        <div class="log-box" style="margin-top:0;">
-          <h3>Лог запросов KLINCH</h3>
-          <div class="log-list" id="klinchLogList" style="max-height:180px;"></div>
         </div>
       </div>
     </div>
@@ -2228,7 +2011,6 @@ const pick = (arr) => arr[randInt(0, arr.length - 1)];
 function explainError(err, mode) {
   const msg = (err && err.message) ? err.message : String(err);
   const modeName = mode === 'deepseek' ? 'DeepSeek' :
-                   mode === 'klinch' ? 'Klinch AI' :
                    mode === 'pollinations' ? 'Pollinations' : 'бесплатный сервис';
 
   if (msg.includes('Не указан ключ') || msg.includes('нет ключа')) {
@@ -2418,7 +2200,6 @@ const PAGE_TITLES = {
   home: 'Главная',
   downloads: 'Скачать',
   comments: 'Генератор комментариев',
-  klinch: 'Klinch AI (Тест API)',
   game: 'Мини-игра',
   passwords: 'Генератор паролей',
   calculator: 'Калькулятор',
@@ -2497,7 +2278,7 @@ themeBtn.addEventListener('click', () => {
    РОУТИНГ
    ========================================================================= */
 
-const SECTIONS = ['home', 'downloads', 'comments', 'klinch', 'game', 'passwords', 'calculator', 'weather', 'worldclock', 'speedtest'];
+const SECTIONS = ['home', 'downloads', 'comments', 'game', 'passwords', 'calculator', 'weather', 'worldclock', 'speedtest'];
 
 function showSection(section) {
   SECTIONS.forEach(s => {
@@ -2630,8 +2411,6 @@ let state = {
   tab: 'text',
   deepseekKey: storage.get('deepseekKey', ''),
   pollinationsKey: storage.get('pollinationsKey', ''),
-  klinchKey: storage.get('klinchKey', ''),
-  klinchModel: storage.get('klinchCommentModel', 'deepseek-flash'),
   images: [],
   comments: [],
   generating: false,
@@ -2645,17 +2424,13 @@ function updateModeUI() {
   const isFree = state.mode === 'free';
   const isDeep = state.mode === 'deepseek';
   const isPoll = state.mode === 'pollinations';
-  const isKlinch = state.mode === 'klinch';
 
   $('deepseekKeyBox').classList.toggle('hidden', !isDeep);
   $('pollinationsKeyBox').classList.toggle('hidden', !isPoll);
-  $('klinchCommentKeyBox')?.classList.toggle('hidden', !isKlinch);
   $('freeLimitWarn').classList.toggle('hidden', !isFree);
 
   if (state.deepseekKey) { $('deepseekKey').value = state.deepseekKey; $('deepseekKeySaved').style.display = 'block'; }
   if (state.pollinationsKey) { $('pollinationsKey').value = state.pollinationsKey; $('pollinationsKeySaved').style.display = 'block'; }
-  if (state.klinchKey && $('klinchCommentKey')) { $('klinchCommentKey').value = state.klinchKey; $('klinchCommentKeySaved').style.display = 'block'; }
-  if ($('klinchCommentModel')) $('klinchCommentModel').value = state.klinchModel || 'deepseek-flash';
 
   $('tabImage').classList.toggle('disabled', isFree);
   if (isFree && state.tab === 'image') {
@@ -2699,16 +2474,6 @@ $('pollinationsKey').addEventListener('input', (e) => {
   state.pollinationsKey = e.target.value.trim();
   storage.set('pollinationsKey', state.pollinationsKey);
   $('pollinationsKeySaved').style.display = state.pollinationsKey ? 'block' : 'none';
-});
-$('klinchCommentKey')?.addEventListener('input', (e) => {
-  state.klinchKey = e.target.value.trim();
-  storage.set('klinchKey', state.klinchKey);
-  $('klinchCommentKeySaved').style.display = state.klinchKey ? 'block' : 'none';
-  if ($('klinchApiKey')) $('klinchApiKey').value = state.klinchKey;
-});
-$('klinchCommentModel')?.addEventListener('change', (e) => {
-  state.klinchModel = e.target.value;
-  storage.set('klinchCommentModel', state.klinchModel);
 });
 
 $('tabText').addEventListener('click', () => {
@@ -2846,19 +2611,6 @@ async function callWithKey(systemPrompt, userContent, useImages) {
     } else messages.push({ role: 'user', content: userContent });
     body = JSON.stringify({ model: 'deepseek-flash', messages, temperature: rand(0.9, 1.15) });
     addLog('Обращаюсь к DeepSeek API...', 'info');
-  } else if (state.mode === 'klinch') {
-    if (!state.klinchKey) throw new Error('Не указан ключ Klinch');
-    url = 'https://api.klinch.cloud/v1/chat/completions';
-    headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + state.klinchKey };
-    const messages = [{ role: 'system', content: systemPrompt }];
-    if (useImages && state.images.length && state.tab === 'image') {
-      const c = [{ type: 'text', text: userContent }];
-      state.images.forEach(src => c.push({ type: 'image_url', image_url: { url: src } }));
-      messages.push({ role: 'user', content: c });
-    } else messages.push({ role: 'user', content: userContent });
-    const chosenModel = ($('klinchCommentModel') && $('klinchCommentModel').value) || state.klinchModel || 'deepseek-flash';
-    body = JSON.stringify({ model: chosenModel, messages, temperature: rand(0.9, 1.1) });
-    addLog(`Обращаюсь к Klinch API (${chosenModel})...`, 'info');
   } else {
     if (!state.pollinationsKey) throw new Error('Не указан ключ Pollinations');
     url = 'https://gen.pollinations.ai/v1/chat/completions';
@@ -2935,12 +2687,6 @@ async function generateComments() {
   if (state.mode === 'pollinations' && !state.pollinationsKey) {
     setStatus('Не удалось сгенерировать', 'error');
     const info = explainError(new Error('Не указан ключ'), 'pollinations');
-    addLog(info.detail, 'err'); addLog('Подсказка: ' + info.hint, 'warn');
-    return;
-  }
-  if (state.mode === 'klinch' && !state.klinchKey) {
-    setStatus('Не удалось сгенерировать', 'error');
-    const info = explainError(new Error('Не указан ключ'), 'klinch');
     addLog(info.detail, 'err'); addLog('Подсказка: ' + info.hint, 'warn');
     return;
   }
@@ -3081,12 +2827,6 @@ async function regenOne(index) {
   if (state.mode === 'pollinations' && !state.pollinationsKey) {
     setStatus('Не удалось сгенерировать', 'error');
     const info = explainError(new Error('Не указан ключ'), 'pollinations');
-    addLog(info.detail, 'err'); addLog('Подсказка: ' + info.hint, 'warn');
-    return;
-  }
-  if (state.mode === 'klinch' && !state.klinchKey) {
-    setStatus('Не удалось сгенерировать', 'error');
-    const info = explainError(new Error('Не указан ключ'), 'klinch');
     addLog(info.detail, 'err'); addLog('Подсказка: ' + info.hint, 'warn');
     return;
   }
@@ -4012,282 +3752,6 @@ addLog('Готов к работе', 'info');
       btn.disabled = false;
     }
   });
-})();
-
-
-/* =========================================================================
-   KLINCH CLOUD API — ТЕСТОВАЯ ВКЛАДКА И ПРОВЕРКА БАЛАНСА
-   ========================================================================= */
-(() => {
-  const keyInput = $('klinchApiKey');
-  const toggleBtn = $('klinchToggleKey');
-  const balanceBtn = $('klinchCheckBalanceBtn');
-  const modelsBtn = $('klinchLoadModelsBtn');
-  const balanceVal = $('klinchBalanceValue');
-  const keyPrefixEl = $('klinchKeyPrefix');
-  const modelSelect = $('klinchModelSelect');
-  const customModelInput = $('klinchCustomModel');
-  const sysInput = $('klinchSystemPrompt');
-  const userInput = $('klinchUserPrompt');
-  const sendBtn = $('klinchSendBtn');
-  const clearBtn = $('klinchClearChatBtn');
-  const popupBtn = $('klinchOpenPopupBtn');
-  const copyLastBtn = $('klinchCopyLastBtn');
-  const statusEl = $('klinchStatus');
-  const chatBox = $('klinchChatBox');
-  const logBox = $('klinchLogList');
-
-  if (!keyInput || !sendBtn) return;
-
-  let lastAssistantReply = '';
-  let chatHistory = [];
-
-  function kLog(text, type = 'info') {
-    if (!logBox) return;
-    const div = document.createElement('div');
-    div.className = 'log-item ' + type;
-    const t = new Date().toLocaleTimeString('ru-RU', { hour12: false });
-    div.innerHTML = `<span class="log-time">[${t}]</span><span>${escapeHtml(text)}</span>`;
-    logBox.appendChild(div);
-    logBox.scrollTop = logBox.scrollHeight;
-  }
-
-  function kStatus(text, type = '') {
-    if (!statusEl) return;
-    statusEl.textContent = text;
-    statusEl.className = 'status ' + type;
-  }
-
-  // Восстанавливаем сохранённый ключ и синхронизируем с вкладкой Комментарии
-  const savedKey = storage.get('klinchKey', '');
-  if (savedKey) {
-    keyInput.value = savedKey;
-  }
-  sysInput.value = storage.get('klinchSysPrompt', '');
-
-  keyInput.addEventListener('input', () => {
-    const val = keyInput.value.trim();
-    storage.set('klinchKey', val);
-    state.klinchKey = val;
-    if ($('klinchCommentKey')) {
-      $('klinchCommentKey').value = val;
-      $('klinchCommentKeySaved').style.display = val ? 'block' : 'none';
-    }
-  });
-
-  sysInput.addEventListener('input', () => {
-    storage.set('klinchSysPrompt', sysInput.value);
-  });
-
-  toggleBtn.addEventListener('click', () => {
-    keyInput.type = keyInput.type === 'password' ? 'text' : 'password';
-  });
-
-  popupBtn.addEventListener('click', () => {
-    window.open('https://klinch.cloud/console/models', 'klinch_cabinet', 'width=1100,height=760,menubar=no,toolbar=no');
-  });
-
-  async function checkBalance() {
-    const key = keyInput.value.trim();
-    if (!key) {
-      kStatus('Сначала вставьте ваш ключ kl_live_...', 'error');
-      kLog('Ошибка: не указан API-ключ', 'err');
-      return;
-    }
-    balanceBtn.disabled = true;
-    kStatus('Проверяем баланс на api.klinch.cloud...', 'loading');
-    kLog('GET https://api.klinch.cloud/v1/balance', 'info');
-    try {
-      const resp = await fetch('https://api.klinch.cloud/v1/balance', {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + key }
-      });
-      if (!resp.ok) {
-        const errTxt = await resp.text().catch(() => '');
-        throw new Error(`HTTP ${resp.status}: ${errTxt.slice(0, 150) || resp.statusText}`);
-      }
-      const data = await resp.json();
-      const bal = typeof data.balance === 'number' ? data.balance.toLocaleString('ru-RU') : String(data.balance ?? '—');
-      balanceVal.innerHTML = `${bal} <small>${escapeHtml(data.unit || 'токенов')}</small>`;
-      keyPrefixEl.textContent = `Префикс: ${data.key_prefix || key.slice(0, 12) + '…'}`;
-      kStatus('Баланс успешно обновлён!', 'success');
-      kLog(`✓ Баланс: ${bal} токенов (${data.key_prefix || 'OK'})`, 'ok');
-    } catch (e) {
-      kStatus('Не удалось получить баланс: ' + e.message, 'error');
-      kLog('✗ Ошибка баланса: ' + e.message, 'err');
-    } finally {
-      balanceBtn.disabled = false;
-    }
-  }
-
-  async function loadModels() {
-    const key = keyInput.value.trim();
-    if (!key) {
-      kStatus('Сначала вставьте ваш ключ kl_live_...', 'error');
-      return;
-    }
-    modelsBtn.disabled = true;
-    kStatus('Загружаем список доступных моделей...', 'loading');
-    kLog('GET https://api.klinch.cloud/v1/models', 'info');
-    try {
-      const resp = await fetch('https://api.klinch.cloud/v1/models', {
-        method: 'GET',
-        headers: { 'Authorization': 'Bearer ' + key }
-      });
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      const data = await resp.json();
-      const list = Array.isArray(data.data) ? data.data : [];
-      if (!list.length) throw new Error('Список моделей пуст');
-
-      const currentVal = modelSelect.value;
-      modelSelect.innerHTML = '';
-      const group = document.createElement('optgroup');
-      group.label = `Доступные модели KLINCH (${list.length})`;
-      list.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = m.id;
-        opt.textContent = m.id;
-        group.appendChild(opt);
-      });
-      modelSelect.appendChild(group);
-      if (list.some(m => m.id === currentVal)) modelSelect.value = currentVal;
-
-      kStatus(`Загружено моделей: ${list.length}`, 'success');
-      kLog(`✓ Получено ${list.length} моделей с сервера`, 'ok');
-    } catch (e) {
-      kStatus('Ошибка загрузки моделей: ' + e.message, 'error');
-      kLog('✗ Ошибка /v1/models: ' + e.message, 'err');
-    } finally {
-      modelsBtn.disabled = false;
-    }
-  }
-
-  function renderChat() {
-    if (!chatHistory.length) {
-      chatBox.innerHTML = `<div style="color:var(--muted); font-size:13px; text-align:center; margin:auto; padding:20px;">
-        Диалог пуст. Напишите запрос слева и нажмите «Отправить запрос».
-      </div>`;
-      return;
-    }
-    chatBox.innerHTML = '';
-    chatHistory.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'klinch-msg ' + item.role;
-      const meta = document.createElement('div');
-      meta.className = 'klinch-msg-meta';
-      meta.innerHTML = `<span>${item.role === 'user' ? 'Вы' : '⚡ ' + escapeHtml(item.model || 'Klinch AI')}</span><span>${escapeHtml(item.info || '')}</span>`;
-      const body = document.createElement('div');
-      body.textContent = item.content;
-      div.appendChild(meta);
-      div.appendChild(body);
-      chatBox.appendChild(div);
-    });
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  async function sendPrompt() {
-    const key = keyInput.value.trim();
-    if (!key) {
-      kStatus('Вставьте ваш ключ kl_live_... в поле выше', 'error');
-      kLog('Запрос отменён: нет ключа API', 'err');
-      return;
-    }
-    const prompt = userInput.value.trim();
-    if (!prompt) {
-      kStatus('Введите текст запроса', 'error');
-      return;
-    }
-    const model = customModelInput.value.trim() || modelSelect.value || 'claude-sonnet-5-5';
-    const sys = sysInput.value.trim();
-
-    const messages = [];
-    if (sys) messages.push({ role: 'system', content: sys });
-    chatHistory.forEach(m => messages.push({ role: m.role, content: m.content }));
-    messages.push({ role: 'user', content: prompt });
-
-    chatHistory.push({ role: 'user', content: prompt, info: new Date().toLocaleTimeString('ru-RU', { hour12: false }) });
-    renderChat();
-    userInput.value = '';
-
-    sendBtn.disabled = true;
-    kStatus(`Ожидание ответа от ${model}...`, 'loading');
-    kLog(`POST /v1/chat/completions (модель: ${model})`, 'info');
-
-    const t0 = performance.now();
-    try {
-      const resp = await fetch('https://api.klinch.cloud/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + key
-        },
-        body: JSON.stringify({
-          model,
-          messages
-        })
-      });
-
-      if (!resp.ok) {
-        const errText = await resp.text().catch(() => '');
-        throw new Error(`HTTP ${resp.status}: ${errText.slice(0, 200) || resp.statusText}`);
-      }
-
-      const data = await resp.json();
-      const reply = data.choices?.[0]?.message?.content || data.content?.[0]?.text || '';
-      if (!reply) throw new Error('Пустой ответ от модели');
-
-      const sec = ((performance.now() - t0) / 1000).toFixed(1);
-      const u = data.usage || {};
-      const inTok = u.prompt_tokens ?? u.input_tokens ?? 0;
-      const outTok = u.completion_tokens ?? u.output_tokens ?? 0;
-      const usageStr = (inTok || outTok) ? `${inTok} вх / ${outTok} вых · ${sec}с` : `${sec}с`;
-
-      lastAssistantReply = reply;
-      chatHistory.push({
-        role: 'assistant',
-        model,
-        content: reply,
-        info: usageStr
-      });
-      renderChat();
-      kStatus(`Ответ получен за ${sec} сек`, 'success');
-      kLog(`✓ Ответ (${model}): ${inTok} вх. / ${outTok} вых. токенов`, 'ok');
-
-      // Автоматически обновляем баланс после запроса
-      checkBalance();
-    } catch (e) {
-      kStatus('Ошибка: ' + e.message, 'error');
-      kLog('✗ ' + e.message, 'err');
-    } finally {
-      sendBtn.disabled = false;
-    }
-  }
-
-  balanceBtn.addEventListener('click', checkBalance);
-  modelsBtn.addEventListener('click', loadModels);
-  sendBtn.addEventListener('click', sendPrompt);
-  userInput.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      sendPrompt();
-    }
-  });
-  clearBtn.addEventListener('click', () => {
-    chatHistory = [];
-    lastAssistantReply = '';
-    renderChat();
-    kStatus('Диалог очищен');
-  });
-  copyLastBtn.addEventListener('click', () => {
-    if (!lastAssistantReply) return;
-    navigator.clipboard.writeText(lastAssistantReply).then(() => {
-      const orig = copyLastBtn.textContent;
-      copyLastBtn.textContent = '✓ Скопировано';
-      setTimeout(() => copyLastBtn.textContent = orig, 1500);
-    });
-  });
-
-  kLog('Модуль Klinch AI готов. Вставьте ключ kl_live_... для проверки.', 'info');
 })();
 
 </script>
